@@ -6,9 +6,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.sundy.icare.R;
-import com.sundy.icare.views.activity.LoadingActivity;
-import com.sundy.icare.views.activity.MainActivity;
+import com.sundy.icare.icare_server.R;
+import com.sundy.icare.icare_server.views.activity.LoadingActivity;
+import com.sundy.icare.icare_server.views.activity.MainActivity;
 
 /**
  * Created by sundy on 16/4/4.
@@ -34,7 +34,7 @@ public class NotificationHelper {
             System.out.print("main");
         }
         Notification notify2 = new Notification.Builder(context)
-                .setSmallIcon(R.drawable.launcher_icon)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setTicker("TickerText:" + "您有新短消息，请注意查收！")
                 .setContentTitle(title)
                 .setContentText(message)

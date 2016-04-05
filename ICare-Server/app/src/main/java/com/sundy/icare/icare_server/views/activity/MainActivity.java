@@ -9,6 +9,9 @@ import android.view.View;
 import com.androidquery.AQuery;
 import com.sundy.icare.icare_server.R;
 import com.sundy.icare.icare_server.utils.MyUtils;
+import com.sundy.icare.icare_server.views.fragment.LatestServerFragment;
+import com.sundy.icare.icare_server.views.fragment.MeFragment;
+import com.sundy.icare.icare_server.views.fragment.MsgFragment;
 import com.sundy.icare.icare_server.views.fragment.TabMenuFragment;
 
 /**
@@ -27,7 +30,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         MyUtils.rtLog(TAG, "------------->onCreate");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_server);
+        setContentView(R.layout.activity_main);
         aq = new AQuery(this);
 
         initBottomMenu();
@@ -48,13 +51,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 android.support.v4.app.Fragment fragment = null;
                 switch (position) {
                     case 0:
-                        fragment = new ServerMsgFragment();
+                        fragment = new MsgFragment();
                         break;
                     case 1:
-                        fragment = new ServerLatestFragment();
+                        fragment = new LatestServerFragment();
                         break;
                     case 2:
-                        fragment = new ServerMeFragment();
+                        fragment = new MeFragment();
                         break;
                 }
                 return fragment;

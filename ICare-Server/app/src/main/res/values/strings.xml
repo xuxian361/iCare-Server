@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ICare-Server</string>
+    <string name="message">消息</string>
+    <string name="latest_server">最新服务</string>
+    <string name="me">我</string>
+    <string name="my_provided_server">我提供的服务</string>
+    <string name="provide_service">提供服务</string>
 </resources>

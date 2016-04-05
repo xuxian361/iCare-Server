@@ -37,7 +37,7 @@ public class TabMenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         MyUtils.rtLog(TAG, "---------->onCreateView");
-        mView = inflater.inflate(R.layout.tab_menu_server, container, false);
+        mView = inflater.inflate(R.layout.fragment_tab_menu, container, false);
         aq = new AQuery(mView);
 
         init();
