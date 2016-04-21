@@ -3,26 +3,41 @@ package com.sundy.icare.icare_server.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.json.JSONObject;
+
 /**
  * Created by sundy on 16/1/17.
  */
 public class MyPreference {
 
 
-    //User Info
-    public static final String PREFERENCE_USERNAME = "PREFERENCE_USERNAME"; //用户登陆名
+    //-------------------------注册------------------------
+    public static final String Preference_Registration = "registration";
+    public static final String Preference_Registration_username = "username";
+    public static final String Preference_Registration_areaCode = "areaCode";
+    public static final String Preference_Registration_phone = "phone";
+    public static final String Preference_Registration_gender = "gender";
+    public static final String Preference_Registration_profileImage = "profileImage";
+    //-------------------------用户信息------------------------
+    public static final String Preference_User = "user";
+    public static final String Preference_User_ID = "id";   //用户ID
+    public static final String Preference_User_name = "name";   //用户名
+    public static final String Preference_User_areaCode = "areaCode";   //手机区号
+    public static final String Preference_User_phone = "phone";   //手机号
+    public static final String Preference_User_profileImage = "profileImage";   //用户头像
+    public static final String Preference_User_sessionKey = "sessionKey";   //sessionKey
+    public static final String Preference_User_easemobAccount = "easemobAccount";   //环信账号
+    public static final String Preference_User_easemobPassword = "easemobPassword";   //环信密码
+    public static final String Preference_User_isServiceProvider = "isServiceProvider";   //是否是服务提供者
+    public static final String Preference_User_AutoLogin = "AutoLogin";   //是否保持登陆状态
+    public static final String Preference_User_email = "email";   //email
+    public static final String Preference_User_address = "address";   //地址
+    public static final String Preference_User_label = "label";   //标签
+    public static final String Preference_User_Login_password = "loginPassword";   //标签
 
-    public static final String PREFERENCE_MOBILE = "PREFERENCE_MOBILE";     //用户登陆手机号
-    public static final String PREFERENCE_TOKEN = "PREFERENCE_TOKEN";       //用户Token
-    public static final String PREFERENCE_USER_ID = "PREFERENCE_USER_ID";   //用户ID
-    public static final String PREFERENCE_IM_USER_NAME = "PREFERENCE_IM_USER_NAME"; //环信用户登陆名
-    public static final String PREFERENCE_IM_ENCRYPTED_PASSWORD = "PREFERENCE_IM_ENCRYPTED_PASSWORD"; //环信用户登陆密码
-    public static final String PREFERENCE_REMEMBER_PASSWORD = "PREFERENCE_REMEMBER_PASSWORD"; //记住密码
-    public static final String PREFERENCE_REMEMBER_USERNAME = "PREFERENCE_REMEMBER_USERNAME"; //记住密码-用户名
 
-
+    //-------------------------APP------------------------
     public static final String UUID_STR = "UUID";       //UUID
-    public static final String PREFERENCE_APP_ID = "PREFERENCE_APP_ID"; //APP_ID: 1>老人机；2>子女端；
 
 
     //Save UUID
@@ -31,78 +46,136 @@ public class MyPreference {
                 context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
         SharedPreferences preferences = context.getSharedPreferences(MyConstant.APP_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(MyPreference.UUID_STR, udid);
+        editor.putString(UUID_STR, udid);
         editor.commit();
     }
 
     //Get UUID
     public static String getUUID(Context context) {
         SharedPreferences preferences = context.getSharedPreferences(MyConstant.APP_NAME, Context.MODE_PRIVATE);
-        String uuid = preferences.getString(MyPreference.UUID_STR, "");
+        String uuid = preferences.getString(UUID_STR, "");
         return uuid;
     }
 
-    //Get APP_User_ID
-    public static String getAPP_User_ID(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(MyConstant.APP_NAME, Context.MODE_PRIVATE);
-        String mobile = preferences.getString(MyPreference.PREFERENCE_MOBILE, "");
-        return mobile;
-    }
-
-    //Save Token
-    public static void saveToken(String token, Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(MyConstant.APP_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(MyPreference.PREFERENCE_TOKEN, token);
-        editor.commit();
-    }
-
-    //Get Token
-    public static String getToken(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(MyConstant.APP_NAME, Context.MODE_PRIVATE);
-        return preferences.getString(MyPreference.PREFERENCE_TOKEN, "");
-    }
-
     //Save User Login Info
-    public static void saveUserInfo(Context context, String im_user_name,
-                                    String im_encrypted_password, String token, String user_id) {
-        SharedPreferences preferences = context.getSharedPreferences(MyConstant.APP_NAME, Context.MODE_PRIVATE);
+    public static void saveUserInfo(Context context, JSONObject userInfo) {
+        try {
+            String user_id = userInfo.has("id") ? userInfo.getString("id") : "";
+            String areaCode = userInfo.has("areaCode") ? userInfo.getString("areaCode") : "";
+            String phone = userInfo.has("phone") ? userInfo.getString("phone") : "";
+            String name = userInfo.has("name") ? userInfo.getString("name") : "";
+            String profileImage = userInfo.has("profileImage") ? userInfo.getString("profileImage") : "";
+            String sessionKey = userInfo.has("sessionKey") ? userInfo.getString("sessionKey") : "";
+            String easemobAccount = userInfo.has("easemobAccount") ? userInfo.getString("easemobAccount") : "";
+            String easemobPassword = userInfo.has("easemobPassword") ? userInfo.getString("easemobPassword") : "";
+            boolean isServiceProvider = userInfo.has("isServiceProvider") ? userInfo.getBoolean("isServiceProvider") : false;
+            String email = userInfo.has("email") ? userInfo.getString("email") : "";
+            String address = userInfo.has("address") ? userInfo.getString("address") : "";
+            String label = userInfo.has("label") ? userInfo.getString("label") : "";
+
+            SharedPreferences preferences = context.getSharedPreferences(Preference_User, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(Preference_User_ID, user_id);
+            editor.putString(Preference_User_name, name);
+            editor.putString(Preference_User_areaCode, areaCode);
+            editor.putString(Preference_User_phone, phone);
+            editor.putString(Preference_User_profileImage, profileImage);
+            editor.putString(Preference_User_sessionKey, sessionKey);
+            editor.putString(Preference_User_easemobAccount, easemobAccount);
+            editor.putString(Preference_User_easemobPassword, easemobPassword);
+            editor.putBoolean(Preference_User_isServiceProvider, isServiceProvider);
+            editor.putString(Preference_User_email, email);
+            editor.putString(Preference_User_address, address);
+            editor.putString(Preference_User_label, label);
+
+            editor.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //修改用户信息
+    public static void updateUserInfo(Context context, JSONObject userInfo) {
+        try {
+            String user_id = userInfo.has("id") ? userInfo.getString("id") : "";
+            String areaCode = userInfo.has("areaCode") ? userInfo.getString("areaCode") : "";
+            String phone = userInfo.has("phone") ? userInfo.getString("phone") : "";
+            String name = userInfo.has("name") ? userInfo.getString("name") : "";
+            String profileImage = userInfo.has("profileImage") ? userInfo.getString("profileImage") : "";
+            String email = userInfo.has("email") ? userInfo.getString("email") : "";
+            String address = userInfo.has("address") ? userInfo.getString("address") : "";
+            String label = userInfo.has("label") ? userInfo.getString("label") : "";
+
+            SharedPreferences preferences = context.getSharedPreferences(Preference_User, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(Preference_User_ID, user_id);
+            editor.putString(Preference_User_name, name);
+            editor.putString(Preference_User_areaCode, areaCode);
+            editor.putString(Preference_User_phone, phone);
+            editor.putString(Preference_User_profileImage, profileImage);
+            editor.putString(Preference_User_email, email);
+            editor.putString(Preference_User_address, address);
+            editor.putString(Preference_User_label, label);
+
+            editor.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //清除保存的用户信息
+    public static void clearUserInfo(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(Preference_User, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(MyPreference.PREFERENCE_USER_ID, user_id);
-        editor.putString(MyPreference.PREFERENCE_TOKEN, token);
-        editor.putString(MyPreference.PREFERENCE_IM_USER_NAME, im_user_name);
-        editor.putString(MyPreference.PREFERENCE_IM_ENCRYPTED_PASSWORD, im_encrypted_password);
+        editor.clear();
         editor.commit();
     }
 
     //判断是否登陆
     public static boolean isLogin(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(MyConstant.APP_NAME, Context.MODE_PRIVATE);
-        String sessionid = preferences.getString(MyPreference.PREFERENCE_TOKEN, "");
+        SharedPreferences preferences = context.getSharedPreferences(Preference_User, Context.MODE_PRIVATE);
+        String sessionid = preferences.getString(Preference_User_sessionKey, "");
         if (!"".equals(sessionid))
             return true;
         return false;
     }
 
-    //设置》记住密码
-    public static void setRememberPWD(Context context, String username, String pwd) {
-        SharedPreferences preferences = context.getSharedPreferences(MyConstant.APP_NAME, Context.MODE_PRIVATE);
+    //设置自动登陆
+    public static void saveAutoLogin(Context context, boolean AutoLogin) {
+        SharedPreferences preferences = context.getSharedPreferences(MyPreference.Preference_User, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(MyPreference.PREFERENCE_REMEMBER_USERNAME, username);
-        editor.putString(MyPreference.PREFERENCE_REMEMBER_PASSWORD, pwd);
+        editor.putBoolean(MyPreference.Preference_User_AutoLogin, AutoLogin);
         editor.commit();
     }
 
     //获取》记住密码
-    public static String getRememberPwd(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(MyConstant.APP_NAME, Context.MODE_PRIVATE);
-        return preferences.getString(MyPreference.PREFERENCE_REMEMBER_PASSWORD, "");
+    public static Boolean getAutoLogin(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(MyPreference.Preference_User, Context.MODE_PRIVATE);
+        return preferences.getBoolean(Preference_User_AutoLogin, false);
     }
 
-    //获取》记住密码-用户名
-    public static String getRememberPwdUserName(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(MyConstant.APP_NAME, Context.MODE_PRIVATE);
-        return preferences.getString(MyPreference.PREFERENCE_REMEMBER_USERNAME, "");
+    //获取》用户名
+    public static String getPhone(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(MyPreference.Preference_User, Context.MODE_PRIVATE);
+        return preferences.getString(Preference_User_phone, "");
+    }
+
+    //保存用户登录密码
+    public static void saveLoginPassword(Context context, String password) {
+        SharedPreferences preferences = context.getSharedPreferences(Preference_User, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        password = EncryptionUtil.getMD5(context, password);
+        editor.putString(Preference_User_Login_password, password);
+
+        editor.commit();
+    }
+
+    //获取保存的用户登陆密码
+    public static String getLoginPassword(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(Preference_User, Context.MODE_PRIVATE);
+        return preferences.getString(Preference_User_Login_password, "");
     }
 
 }

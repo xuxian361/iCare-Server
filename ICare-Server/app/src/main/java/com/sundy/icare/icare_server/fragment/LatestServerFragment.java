@@ -1,4 +1,4 @@
-package com.sundy.icare.icare_server.views.fragment;
+package com.sundy.icare.icare_server.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;

@@ -7,7 +7,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.androidquery.callback.BitmapAjaxCallback;
+import com.baidu.mapapi.SDKInitializer;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMOptions;
 import com.sundy.icare.icare_server.utils.LruBitmapCache;
 import com.sundy.icare.icare_server.utils.MyUtils;
 
@@ -30,6 +34,10 @@ public class MyApp extends Application {
         super.onCreate();
         myApp = this;
 
+        //百度地图SDK
+        SDKInitializer.initialize(this);
+
+        //极光Push
         JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);            // 初始化 JPush
 
@@ -41,16 +49,25 @@ public class MyApp extends Application {
         // 如果app启用了远程的service，此application:onCreate会被调用2次
         // 为了防止环信SDK被初始化2次，加此判断会保证SDK被初始化1次
         // 默认的app会在以包名为默认的process name下运行，如果查到的process name不是app的process name就立即返回
-        if (processAppName == null || !processAppName.equalsIgnoreCase("com.sundy.icare")) {
+        if (processAppName == null || !processAppName.equalsIgnoreCase("com.sundy.icare.icare_server")) {
             MyUtils.rtLog(TAG, "enter the service process!");
             return;
         }
+        EMOptions options = new EMOptions();
+        // 默认添加好友时，是不需要验证的，改成需要验证
+        options.setAcceptInvitationAlways(false);
+        //初始化
+        EMClient.getInstance().init(this, options);
+        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
+        EMClient.getInstance().setDebugMode(true);
+
 
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
+        BitmapAjaxCallback.clearCache();
     }
 
     public static synchronized MyApp getInstance() {
